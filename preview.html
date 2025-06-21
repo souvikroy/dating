@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoveConnect - Dating App Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53, #FF6B9D);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .phone-container {
+            width: 375px;
+            height: 667px;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53, #FF6B9D);
+            border-radius: 25px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-container::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .form {
+            background: white;
+            border-radius: 25px;
+            padding: 40px 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #E0E0E0;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+        }
+
+        .input-icon {
+            margin-right: 15px;
+            color: #666;
+            font-size: 20px;
+        }
+
+        .input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 16px;
+            color: #333;
+            background: transparent;
+        }
+
+        .input::placeholder {
+            color: #999;
+        }
+
+        .login-button {
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 18px;
+            font-size: 18px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-button:hover {
+            background: #FF5252;
+            transform: translateY(-2px);
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .footer {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .footer-text {
+            font-size: 16px;
+        }
+
+        .signup-link {
+            font-weight: bold;
+            text-decoration: underline;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .preview-note {
+            position: absolute;
+            bottom: -80px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+
+        .screens-nav {
+            position: absolute;
+            top: -60px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .screen-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .screen-btn.active {
+            background: rgba(255,255,255,0.4);
+        }
+
+        .swipe-preview {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 500px;
+            position: relative;
+        }
+
+        .card {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            display: flex;
+            align-items: flex-end;
+            color: white;
+            position: relative;
+        }
+
+        .card-content {
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            width: 100%;
+        }
+
+        .card-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .card-age {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .card-bio {
+            font-size: 14px;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .pass-btn {
+            background: #F44336;
+            color: white;
+        }
+
+        .like-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <div class="screens-nav">
+            <button class="screen-btn active" onclick="showLogin()">Login</button>
+            <button class="screen-btn" onclick="showSwipe()">Swipe</button>
+            <button class="screen-btn" onclick="showLiveRooms()">Live Rooms</button>
+            <button class="screen-btn" onclick="showChat()">Chat</button>
+        </div>
+
+        <!-- Login Screen -->
+        <div id="login-screen">
+            <div class="header">
+                <div class="title">💕 LoveConnect</div>
+                <div class="subtitle">Find your perfect match</div>
+            </div>
+
+            <div class="form">
+                <div class="input-container">
+                    <span class="input-icon">📧</span>
+                    <input type="email" class="input" placeholder="Email" value="demo@example.com">
+                </div>
+
+                <div class="input-container">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" class="input" placeholder="Password" value="password123">
+                </div>
+
+                <button class="login-button" onclick="showSwipe()">Sign In</button>
+
+                <div class="forgot-password">Forgot Password?</div>
+            </div>
+
+            <div class="footer">
+                <span class="footer-text">Don't have an account?</span>
+                <span class="signup-link">Sign Up</span>
+            </div>
+        </div>
+
+        <!-- Swipe Screen -->
+        <div id="swipe-screen" style="display: none;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="color: white; font-size: 24px;">💕 LoveConnect</h2>
+            </div>
+            
+            <div class="swipe-preview">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-name">Emma, 25</div>
+                        <div class="card-age">Photographer • 2 miles away</div>
+                        <div class="card-bio">Love traveling and photography. Looking for someone to explore the world with! 📸✈️</div>
+                        
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <span style="background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 12px;">Travel</span>
+                            <span style="background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 12px;">Photography</span>
+                            <span style="background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 12px;">Art</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn pass-btn" onclick="nextCard()">✕</button>
+                <button class="action-btn" style="background: #2196F3; color: white; width: 50px; height: 50px;">⭐</button>
+                <button class="action-btn like-btn" onclick="showMatch()">♥</button>
+            </div>
+        </div>
+
+        <!-- Live Rooms Screen -->
+        <div id="live-rooms-screen" style="display: none;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="color: white; font-size: 24px;">🎤 Live Rooms</h2>
+                <p style="color: white; opacity: 0.8; font-size: 14px; margin-top: 5px;">Join audio conversations with people</p>
+            </div>
+            
+            <div style="background: white; border-radius: 20px; height: 450px; padding: 15px; overflow-y: auto;">
+                <!-- Room 1 -->
+                <div style="background: #f8f9fa; border-radius: 12px; padding: 15px; margin-bottom: 12px; border-left: 4px solid #FF6B6B;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="background: #FF4444; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold;">🔴 LIVE</span>
+                        <span style="background: #e0e0e0; padding: 3px 8px; border-radius: 8px; font-size: 11px; color: #666;">Music</span>
+                    </div>
+                    <h4 style="margin-bottom: 5px; color: #333;">🎵 Music Lovers Unite</h4>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 8px;">Share your favorite songs and discover new music</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 11px; color: #666;">👥 12/20 people</span>
+                        <div style="display: flex; gap: 3px;">
+                            <div style="width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); border: 2px solid white; margin-left: -5px;"></div>
+                            <div style="width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(45deg, #4ECDC4, #44A08D); border: 2px solid white; margin-left: -5px;"></div>
+                            <div style="width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(45deg, #667eea, #764ba2); border: 2px solid white; margin-left: -5px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Room 2 -->
+                <div style="background: #f8f9fa; border-radius: 12px; padding: 15px; margin-bottom: 12px; border-left: 4px solid #4CAF50;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="background: #FF4444; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold;">🔴 LIVE</span>
+                        <span style="background: #e0e0e0; padding: 3px 8px; border-radius: 8px; font-size: 11px; color: #666;">Travel</span>
+                    </div>
+                    <h4 style="margin-bottom: 5px; color: #333;">✈️ Travel Stories</h4>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 8px;">Share experiences and get recommendations</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 11px; color: #666;">👥 8/15 people</span>
+                        <div style="display: flex; gap: 3px;">
+                            <div style="width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); border: 2px solid white; margin-left: -5px;"></div>
+                            <div style="width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(45deg, #f093fb, #f5576c); border: 2px solid white; margin-left: -5px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Room 3 -->
+                <div style="background: #f8f9fa; border-radius: 12px; padding: 15px; margin-bottom: 12px; border-left: 4px solid #9C27B0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="background: #FF4444; color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold;">🔴 LIVE</span>
+                        <span style="background: #e0e0e0; padding: 3px 8px; border-radius: 8px; font-size: 11px; color: #666;">General</span>
+                    </div>
+                    <h4 style="margin-bottom: 5px; color: #333;">🌙 Late Night Conversations</h4>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 8px;">Deep talks and philosophical discussions</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 11px; color: #666;">👥 6/10 people</span>
+                        <div style="display: flex; gap: 3px;">
+                            <div style="width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(45deg, #667eea, #764ba2); border: 2px solid white; margin-left: -5px;"></div>
+                            <div style="width: 20px; height: 20px; border-radius: 50%; background: linear-gradient(45deg, #f093fb, #f5576c); border: 2px solid white; margin-left: -5px;"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button style="background: #FF6B6B; color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer;" onclick="createRoom()">+ Create Room</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Screen -->
+        <div id="chat-screen" style="display: none;">
+            <div style="background: white; border-radius: 20px; height: 500px; padding: 20px; color: #333;">
+                <div style="display: flex; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee;">
+                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); margin-right: 12px;"></div>
+                    <h3 style="flex: 1;">Emma</h3>
+                    <button style="background: none; border: none; color: #FF6B6B; font-size: 20px; cursor: pointer; margin-right: 10px;" onclick="inviteToRoom()" title="Invite to Live Room">🎤</button>
+                    <button style="background: none; border: none; color: #666; font-size: 20px; cursor: pointer;" title="Video Call">📹</button>
+                </div>
+
+                <div style="flex: 1; margin-bottom: 20px;">
+                    <div style="background: #f0f0f0; padding: 12px 16px; border-radius: 18px; margin-bottom: 10px; max-width: 80%;">
+                        Hey! Thanks for the match! 😊
+                    </div>
+                    <div style="background: #FF6B6B; color: white; padding: 12px 16px; border-radius: 18px; margin-bottom: 10px; max-width: 80%; margin-left: auto;">
+                        Hi! Nice to meet you! How are you doing?
+                    </div>
+                    <div style="background: #f0f0f0; padding: 12px 16px; border-radius: 18px; margin-bottom: 10px; max-width: 80%;">
+                        I'm doing great! I love your photos, especially the travel ones. Do you travel often?
+                    </div>
+                    <div style="background: #FF6B6B; color: white; padding: 12px 16px; border-radius: 18px; max-width: 80%; margin-left: auto;">
+                        Thank you! Yes, I love exploring new places. Just got back from Italy last month!
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" placeholder="Type a message..." style="flex: 1; padding: 12px 16px; border: 1px solid #ddd; border-radius: 20px; outline: none;">
+                    <button style="width: 40px; height: 40px; border-radius: 50%; background: #FF6B6B; color: white; border: none; cursor: pointer;">➤</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-note">
+            📱 This is a preview of your React Native dating app!<br>
+            Install Node.js and run "npm start" to see the real app.
+        </div>
+    </div>
+
+    <script>
+        function showLogin() {
+            document.getElementById('login-screen').style.display = 'block';
+            document.getElementById('swipe-screen').style.display = 'none';
+            document.getElementById('live-rooms-screen').style.display = 'none';
+            document.getElementById('chat-screen').style.display = 'none';
+            updateActiveBtn(0);
+        }
+
+        function showSwipe() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('swipe-screen').style.display = 'block';
+            document.getElementById('live-rooms-screen').style.display = 'none';
+            document.getElementById('chat-screen').style.display = 'none';
+            updateActiveBtn(1);
+        }
+
+        function showLiveRooms() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('swipe-screen').style.display = 'none';
+            document.getElementById('live-rooms-screen').style.display = 'block';
+            document.getElementById('chat-screen').style.display = 'none';
+            updateActiveBtn(2);
+        }
+
+        function showChat() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('swipe-screen').style.display = 'none';
+            document.getElementById('live-rooms-screen').style.display = 'none';
+            document.getElementById('chat-screen').style.display = 'block';
+            updateActiveBtn(3);
+        }
+
+        function updateActiveBtn(index) {
+            const btns = document.querySelectorAll('.screen-btn');
+            btns.forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+        }
+
+        function nextCard() {
+            alert('Swiped left! Next person...');
+        }
+
+        function showMatch() {
+            alert('💕 It\'s a Match! You and Emma liked each other!');
+            showChat();
+        }
+
+        function createRoom() {
+            alert('🎤 Create Live Room feature! You can create audio rooms for group conversations.');
+        }
+
+        function inviteToRoom() {
+            alert('📨 Invite Sent! Emma has been invited to join your live audio room.');
+        }
+    </script>
+</body>
+</html>

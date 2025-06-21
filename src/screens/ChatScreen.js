@@ -10,6 +10,7 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -56,6 +57,23 @@ export default function ChatScreen({ route, navigation }) {
     }
   };
 
+  const inviteToLiveRoom = () => {
+    Alert.alert(
+      'Invite to Live Room',
+      `Would you like to invite ${user?.name || 'this user'} to join a live audio room?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { 
+          text: 'Create Room', 
+          onPress: () => {
+            Alert.alert('Room Created!', 'Live room created and invitation sent!');
+            // In a real app, this would create a room and send invitation
+          }
+        },
+      ]
+    );
+  };
+
   const renderMessage = ({ item }) => (
     <View
       style={[
@@ -92,9 +110,14 @@ export default function ChatScreen({ route, navigation }) {
           />
           <Text style={styles.userName}>{user?.name || 'User'}</Text>
         </View>
-        <TouchableOpacity>
-          <Ionicons name="videocam-outline" size={24} color="#333" />
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', gap: 15 }}>
+          <TouchableOpacity onPress={() => inviteToLiveRoom()}>
+            <Ionicons name="mic-outline" size={24} color="#FF6B6B" />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Ionicons name="videocam-outline" size={24} color="#333" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Messages */}

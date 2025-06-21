@@ -14,6 +14,8 @@ import MatchesScreen from './src/screens/MatchesScreen';
 import ChatScreen from './src/screens/ChatScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
+import LiveRoomsScreen from './src/screens/LiveRoomsScreen';
+import LiveRoomScreen from './src/screens/LiveRoomScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -28,12 +30,12 @@ function MainTabs() {
 
           if (route.name === 'Discover') {
             iconName = focused ? 'heart' : 'heart-outline';
+          } else if (route.name === 'Live Rooms') {
+            iconName = focused ? 'mic' : 'mic-outline';
           } else if (route.name === 'Matches') {
             iconName = focused ? 'chatbubbles' : 'chatbubbles-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'Settings') {
-            iconName = focused ? 'settings' : 'settings-outline';
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -44,9 +46,9 @@ function MainTabs() {
       })}
     >
       <Tab.Screen name="Discover" component={SwipeScreen} />
+      <Tab.Screen name="Live Rooms" component={LiveRoomsScreen} />
       <Tab.Screen name="Matches" component={MatchesScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
 }
@@ -76,6 +78,16 @@ export default function App() {
               name="Chat" 
               component={ChatScreen} 
               options={{ headerShown: true, title: 'Chat' }}
+            />
+            <Stack.Screen 
+              name="LiveRoom" 
+              component={LiveRoomScreen} 
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen 
+              name="Settings" 
+              component={SettingsScreen} 
+              options={{ headerShown: true, title: 'Settings' }}
             />
           </>
         )}
